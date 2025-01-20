@@ -1,0 +1,163 @@
+:root {
+  --primary-color: #e3f2fd;
+  --secondary-color: #2196f3;
+  --text-color: #333;
+  --background-color: #ffffff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+
+header {
+  background: var(--secondary-color);
+  color: white;
+  padding-top: 30px;
+  min-height: 70px;
+  border-bottom: var(--primary-color) 3px solid;
+}
+
+header a {
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+header ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+header li {
+  float: left;
+  display: inline;
+  padding: 0 20px 0 20px;
+}
+
+header #branding {
+  float: left;
+}
+
+header #branding h1 {
+  margin: 0;
+}
+
+header nav {
+  float: right;
+  margin-top: 10px;
+}
+
+header .highlight,
+header .current a {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+header a:hover {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+#showcase {
+  min-height: 400px;
+  background: url("https://via.placeholder.com/1500x400") no-repeat center center / cover;
+  text-align: center;
+  color: #ffffff;
+}
+
+#showcase h1 {
+  margin-top: 100px;
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+#showcase p {
+  font-size: 20px;
+}
+
+#boxes {
+  margin-top: 20px;
+}
+
+#boxes .box {
+  float: left;
+  text-align: center;
+  width: 30%;
+  padding: 10px;
+}
+
+#boxes .box img {
+  width: 90px;
+}
+
+footer {
+  padding: 20px;
+  margin-top: 20px;
+  color: #ffffff;
+  background-color: var(--secondary-color);
+  text-align: center;
+}
+
+/* Estilos para a página de estatísticas */
+#stats {
+  padding: 15px;
+  background: var(--primary-color);
+}
+
+#stats h1 {
+  text-align: center;
+}
+
+#stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.player-card {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 15px;
+  width: 250px;
+}
+
+.player-card h2 {
+  color: var(--secondary-color);
+  margin-top: 0;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  header #branding,
+  header nav,
+  header nav li,
+  #boxes .box {
+    float: none;
+    text-align: center;
+    width: 100%;
+  }
+
+  header {
+    padding-bottom: 20px;
+  }
+
+  #showcase h1 {
+    margin-top: 40px;
+  }
+}
+
