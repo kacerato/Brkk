@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const statsContainer = document.getElementById('stats-container');
     
     function fetchStats() {
-        fetch('/api/stats')
+        fetch('http://localhost:3000/api/stats')
             .then(response => response.json())
             .then(players => {
                 displayStats(players);
