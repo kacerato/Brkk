@@ -1,15 +1,15 @@
 {
   "name": "shootout-score",
   "version": "1.0.0",
-  "description": "Kings League statistics tracker",
+  "description": "Estatísticas da Kings League",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
-    "axios": "^0.27.2",
-    "cheerio": "^1.0.0-rc.12"
+    "express": "^4.18.2"
   }
 }
