@@ -60,7 +60,8 @@ export class GameScene extends Scene {
 
         // Overlaps
         this.physics.add.overlap(this.player, this.keyItem, this.collectKey, undefined, this);
-        this.physics.add.overlap(this.player, this.door, this.checkDoor, undefined, this);
+        // Remove automatic door check on overlap, now controlled by Interaction Input
+        // this.physics.add.overlap(this.player, this.door, this.checkDoor, undefined, this);
 
         // Input
         if (this.input.keyboard) {
@@ -110,10 +111,22 @@ export class GameScene extends Scene {
             this.player.setTexture('nick');
         }
 
-        if ((this.cursors?.up.isDown || this.interactInput) && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
-            this.interactInput = false; // Reset jump/interact trigger
-            soundManager.playFootstep(); // Jump sound placeholder
+        // Logic for interaction (Action Button) - NO JUMPING
+        if (this.interactInput) {
+            this.interactInput = false; // consume input
+            // Check overlaps manually or let physics overlap callback handle it
+            // Since we use physics overlap in create(), those trigger automatically when bodies touch.
+            // But usually we want action ONLY when button pressed.
+
+            // Let's rely on overlap callbacks checking a flag or just use the button to trigger 'check' logic?
+            // Actually, physics overlaps run every frame.
+            // Better approach: When Interact Pressed, check distance to objects.
+
+            if (this.physics.overlap(this.player, this.door)) {
+                 // Trigger door logic
+                 // We need to re-trigger the checkDoor manually or rely on state
+                 this.checkDoor(this.player, this.door);
+            }
         }
     }
 

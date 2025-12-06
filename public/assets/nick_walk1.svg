@@ -1,25 +1,68 @@
 <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <!-- Frame 1: Walk Stride Left -->
+  <!-- Frame 1: Walk Left Foot Forward -->
 
-  <!-- Head -->
-  <circle cx="32" cy="22" r="14" fill="#E0E0E0" stroke="#333" stroke-width="2" />
-  <!-- Eyes -->
-  <circle cx="28" cy="20" r="4" fill="#000" />
-  <circle cx="38" cy="20" r="3" fill="#000" />
-  <!-- Mouth -->
-  <path d="M28 30 Q32 34 36 30" stroke="#333" stroke-width="1" fill="none" />
+  <!-- Legs (Left Forward, Right Back) -->
+  <path d="M24 48 L20 58 L24 58 L28 48" fill="#FAD7C0" />
+  <path d="M36 48 L40 56 L44 56 L40 48" fill="#DDBCA7" /> <!-- Darker for back leg -->
 
-  <!-- Hair -->
-  <path d="M18 22 Q18 12 32 8 Q46 12 46 22 L48 32 Q48 37 40 32 L46 22 L44 16 Q32 12 20 16 L18 22 L16 32 Q16 37 24 32 L18 22" fill="#111" />
+  <!-- Shoes -->
+  <path d="M19 58 L19 62 Q19 64 22 64 L24 64 L24 58 Z" fill="#800000" />
+  <path d="M40 56 L40 62 L42 62 Q45 62 45 60 L45 56 Z" fill="#600000" />
 
-  <!-- Body -->
-  <path d="M24 36 L22 56 L42 56 L40 36 Z" fill="#4A235A" />
+  <!-- Dress (Bobbing) -->
+  <path d="M24 31 L20 49 Q20 51 32 51 Q44 51 44 49 L40 31 Z" fill="#FFF8F0" stroke="#DDD" stroke-width="0.5"/>
+  <!-- Polka Dots -->
+  <circle cx="28" cy="37" r="1" fill="#C00" />
+  <circle cx="36" cy="37" r="1" fill="#C00" />
+  <circle cx="24" cy="43" r="1" fill="#C00" />
+  <circle cx="32" cy="43" r="1" fill="#C00" />
+  <circle cx="40" cy="43" r="1" fill="#C00" />
+  <!-- Blue Trim -->
+  <path d="M20 49 Q32 53 44 49" fill="none" stroke="#004488" stroke-width="1.5" />
 
-  <!-- Arms (Swinging) -->
-  <line x1="24" y1="38" x2="16" y2="42" stroke="#E0E0E0" stroke-width="3" />
-  <line x1="40" y1="38" x2="48" y2="42" stroke="#E0E0E0" stroke-width="3" />
+  <!-- Sleeves -->
+  <ellipse cx="22" cy="33" rx="3" ry="4" fill="#FFF8F0" />
+  <ellipse cx="42" cy="33" rx="3" ry="4" fill="#FFF8F0" />
+  <!-- Blue Bow -->
+  <path d="M30 31 L28 35 L32 31 L36 35 L34 31 Z" fill="#004488" />
 
-  <!-- Legs (Stepping) -->
-  <line x1="28" y1="56" x2="24" y2="64" stroke="#333" stroke-width="2" />
-  <line x1="36" y1="56" x2="40" y2="64" stroke="#333" stroke-width="2" />
+  <!-- Head (Bobbing Down slightly) -->
+  <g transform="translate(0, 1)">
+      <!-- Main Apple Shape -->
+      <path d="M16 16 Q16 6 32 6 Q48 6 48 16 Q52 24 48 34 Q40 40 32 36 Q24 40 16 34 Q12 24 16 16" fill="#D32F2F" stroke="#8B0000" stroke-width="1" />
+      <!-- Green patch on apple -->
+      <path d="M40 8 Q46 8 46 14 L44 14 Q40 10 40 8" fill="#558B2F" />
+      <!-- Stem -->
+      <path d="M32 6 Q30 2 28 0" stroke="#3E2723" stroke-width="2" fill="none"/>
+      <!-- Leaf -->
+      <path d="M32 6 Q38 0 42 4 Q38 8 32 6" fill="#7CB342" stroke="#33691E" stroke-width="0.5"/>
+
+      <!-- Face (Girl inside apple) -->
+      <path d="M24 18 Q32 18 40 18 L40 28 Q40 36 32 36 Q24 36 24 28 Z" fill="#FAD7C0" />
+      <!-- Hair (Brown) -->
+      <path d="M24 18 Q24 24 22 26" stroke="#8D6E63" stroke-width="1" fill="none"/>
+      <path d="M40 18 Q40 24 42 26" stroke="#8D6E63" stroke-width="1" fill="none"/>
+      <path d="M24 18 Q32 20 40 18" fill="#A1887F" />
+      <!-- Eyes (Blue anime style) -->
+      <circle cx="29" cy="26" r="2.5" fill="#2979FF" />
+      <circle cx="29" cy="26" r="1" fill="#000" />
+      <circle cx="35" cy="26" r="2.5" fill="#2979FF" />
+      <circle cx="35" cy="26" r="1" fill="#000" />
+      <!-- Mouth -->
+      <path d="M31 32 Q32 33 33 32" stroke="#AA8070" stroke-width="0.5" fill="none" />
+
+      <!-- Apple Eyes (Macabre) -->
+      <g>
+        <ellipse cx="20" cy="14" rx="2" ry="1.5" fill="#FFF" />
+        <circle cx="20" cy="14" r="0.8" fill="#000" />
+        <ellipse cx="44" cy="14" rx="2" ry="1.5" fill="#FFF" />
+        <circle cx="44" cy="14" r="0.8" fill="#000" />
+        <ellipse cx="14" cy="24" rx="1.5" ry="1" fill="#FFF" />
+        <circle cx="14" cy="24" r="0.5" fill="#000" />
+        <ellipse cx="50" cy="24" rx="1.5" ry="1" fill="#FFF" />
+        <circle cx="50" cy="24" r="0.5" fill="#000" />
+        <ellipse cx="40" cy="32" rx="1.5" ry="1" fill="#FFF" />
+        <circle cx="40" cy="32" r="0.5" fill="#000" />
+      </g>
+  </g>
 </svg>
