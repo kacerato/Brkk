@@ -129,7 +129,7 @@ const Game: React.FC = () => {
                     onMouseUp={() => handleInput('interact', false)}
                     onTouchStart={() => handleInput('interact', true)}
                     onTouchEnd={() => handleInput('interact', false)}
-                    style={{...btnStyle, backgroundColor: '#800000'}} // Red for interact
+                    style={{...btnStyle, backgroundColor: 'rgba(0, 100, 200, 0.5)'}} // Blue/Neutral for interact
                 >ACTION</button>
             </div>
         </div>

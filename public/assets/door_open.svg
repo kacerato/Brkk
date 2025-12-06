@@ -1,0 +1,12 @@
+<svg width="60" height="100" viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Door frame (Background) -->
+  <rect x="0" y="0" width="60" height="100" fill="#000" />
+
+  <!-- Perspective Door (Open inward) -->
+  <path d="M5,5 L15,10 L15,90 L5,95 Z" fill="#2d1e1b" stroke="#000" stroke-width="1"/>
+
+  <!-- Light spilling out -->
+  <polygon points="15,10 60,0 60,100 15,90" fill="#ffffee" opacity="0.6" />
+
+  <rect x="5" y="5" width="50" height="90" fill="none" stroke="#212121" stroke-width="2"/>
+</svg>
