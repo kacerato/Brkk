@@ -70,6 +70,58 @@ export class SoundManager {
          // Loop forever? For now, let's not leak oscillators in this simple demo
          osc.stop(this.ctx.currentTime + 5);
     }
+
+    playDoorOpen() {
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        // Low creak
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(50, this.ctx.currentTime + 1.5);
+
+        gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1.5);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + 1.5);
+    }
+
+    playLockedSound() {
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+
+        gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.1);
+
+        // Double click effect
+        const osc2 = this.ctx.createOscillator();
+        const gain2 = this.ctx.createGain();
+        osc2.type = 'square';
+        osc2.frequency.setValueAtTime(100, this.ctx.currentTime + 0.15);
+        gain2.gain.setValueAtTime(0.05, this.ctx.currentTime + 0.15);
+        gain2.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+
+        osc2.start(this.ctx.currentTime + 0.15);
+        osc2.stop(this.ctx.currentTime + 0.25);
+    }
 }
 
 export const soundManager = new SoundManager();

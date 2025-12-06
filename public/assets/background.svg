@@ -1,52 +1,50 @@
 <svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-  <!-- Asylum Room Background -->
-
-  <!-- Walls: Padded texture -->
   <defs>
-    <pattern id="paddedWall" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-      <rect width="100" height="100" fill="#E0E0D0" />
-      <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="#D7D7C7" />
-      <circle cx="50" cy="50" r="5" fill="#B0B0A0" opacity="0.5" />
-      <path d="M50 50 L0 0 M50 50 L100 0 M50 50 L100 100 M50 50 L0 100" stroke="#C0C0B0" stroke-width="2" opacity="0.5"/>
-    </pattern>
-    <filter id="grime">
-       <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3" result="noise"/>
-       <feColorMatrix type="matrix" values="0.3 0 0 0 0  0 0.3 0 0 0  0 0 0.2 0 0  0 0 0 0.4 0" in="noise" result="coloredNoise"/>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.2 0" />
     </filter>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#000" stop-opacity="0" />
+        <stop offset="100%" stop-color="#000" stop-opacity="0.8" />
+    </radialGradient>
   </defs>
 
-  <!-- Background Layer -->
-  <rect width="800" height="450" fill="url(#paddedWall)" />
+  <!-- Wall Background -->
+  <rect width="800" height="600" fill="#222" />
+  <rect width="800" height="500" fill="#333" />
 
-  <!-- Grime Overlay -->
-  <rect width="800" height="600" filter="url(#grime)" opacity="0.6" style="mix-blend-mode: multiply;" />
+  <!-- Wallpaper Pattern -->
+  <path d="M50,0 L50,500 M150,0 L150,500 M250,0 L250,500 M350,0 L350,500 M450,0 L450,500 M550,0 L550,500 M650,0 L650,500 M750,0 L750,500" stroke="#2a2a2a" stroke-width="2" />
+
+  <!-- Peeling Wallpaper -->
+  <path d="M100,100 L120,150 L110,200 M600,300 L620,350 L580,400" stroke="#111" stroke-width="2" fill="none" />
 
   <!-- Floor -->
-  <path d="M0 450 L800 450 L800 600 L0 600 Z" fill="#2E2E2E" />
-  <!-- Tiles -->
-  <path d="M0 450 L800 450 M0 500 L800 500 M0 550 L800 550" stroke="#111" stroke-width="2" opacity="0.5"/>
-  <path d="M100 450 L50 600 M300 450 L250 600 M500 450 L450 600 M700 450 L650 600" stroke="#111" stroke-width="2" opacity="0.5"/>
+  <rect y="500" width="800" height="100" fill="#1a1a1a" />
+  <path d="M0,500 L800,500" stroke="#000" stroke-width="4" />
+  <line x1="0" y1="520" x2="800" y2="520" stroke="#111" stroke-width="1" />
+  <line x1="0" y1="550" x2="800" y2="550" stroke="#111" stroke-width="1" />
+  <line x1="0" y1="580" x2="800" y2="580" stroke="#111" stroke-width="1" />
 
-  <!-- Bed (Rusty metal frame) -->
-  <path d="M50 400 L50 500 M200 400 L200 500 M50 450 L200 450" stroke="#5D4037" stroke-width="8" />
-  <rect x="50" y="420" width="150" height="30" fill="#EFEBE9" /> <!-- Mattress -->
-  <path d="M60 420 L90 420 L90 440 L60 440 Z" fill="#CFD8DC" /> <!-- Pillow -->
-  <path d="M100 420 L200 420 L200 450 L100 450 Z" fill="#B0BEC5" /> <!-- Blanket -->
+  <!-- Bed (Left) -->
+  <g transform="translate(50, 420)">
+      <rect x="0" y="20" width="200" height="60" fill="#2d2d2d" stroke="#111" stroke-width="2" />
+      <rect x="0" y="0" width="200" height="80" fill="none" stroke="#111" stroke-width="3" />
+      <path d="M10,20 Q50,15 90,20 Q130,25 170,20" stroke="#444" stroke-width="2" fill="none" />
+      <circle cx="30" cy="10" r="15" fill="#555" opacity="0.5" />
+  </g>
 
-  <!-- Window (Barred high up) -->
-  <rect x="500" y="50" width="120" height="80" fill="#1A237E" stroke="#333" stroke-width="5" />
-  <line x1="530" y1="50" x2="530" y2="130" stroke="#000" stroke-width="4" />
-  <line x1="560" y1="50" x2="560" y2="130" stroke="#000" stroke-width="4" />
-  <line x1="590" y1="50" x2="590" y2="130" stroke="#000" stroke-width="4" />
+  <!-- Window (Center-Right) -->
+  <g transform="translate(500, 100)">
+      <rect x="0" y="0" width="120" height="150" fill="#111" stroke="#000" stroke-width="5" />
+      <line x1="60" y1="0" x2="60" y2="150" stroke="#000" stroke-width="3" />
+      <line x1="0" y1="75" x2="120" y2="75" stroke="#000" stroke-width="3" />
+      <circle cx="90" cy="40" r="20" fill="#ccccff" opacity="0.1" />
+  </g>
 
-  <!-- Light Rays -->
-  <path d="M500 130 L450 450 L650 450 L620 130" fill="#FFF" opacity="0.1" />
+  <!-- Overlay Grain & Vignette -->
+  <rect width="800" height="600" filter="url(#grain)" opacity="0.3" />
+  <rect width="800" height="600" fill="url(#vignette)" />
 
-  <!-- Details -->
-  <!-- Scratch marks -->
-  <path d="M300 200 L320 230 M310 200 L300 230 M320 200 L310 230" stroke="#3E2723" stroke-width="1" opacity="0.6" />
-
-  <!-- Poster/Paper on wall -->
-  <rect x="650" y="250" width="40" height="50" fill="#FFF" transform="rotate(5 670 275)" />
-  <path d="M660 260 L680 260 M660 270 L680 270" stroke="#000" stroke-width="1" opacity="0.5"/>
 </svg>

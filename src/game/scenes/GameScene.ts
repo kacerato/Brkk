@@ -28,18 +28,21 @@ export class GameScene extends Scene {
         ground.create(400, 580, undefined).setSize(800, 40).setVisible(false);
 
         // Door
-        this.door = this.physics.add.sprite(700, 485, 'door');
+        this.door = this.physics.add.sprite(700, 485, 'door_closed');
         this.door.setImmovable(true);
         (this.door.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
         // Key (Hidden somewhere or visible)
-        this.keyItem = this.physics.add.sprite(100, 500, 'key');
+        this.keyItem = this.physics.add.sprite(100, 550, 'key');
         this.keyItem.setBounceY(0.5);
 
-        // Player
-        this.player = this.physics.add.sprite(400, 500, 'nick');
+        // Player - Adjusted Y to fit new scale
+        this.player = this.physics.add.sprite(400, 480, 'nick');
         this.player.setCollideWorldBounds(true);
         this.player.setBounce(0.1);
+        // Reduce hitbox size slightly to fit the visual
+        this.player.body.setSize(60, 180);
+        this.player.body.setOffset(34, 10);
 
         // Animations
         this.anims.create({
@@ -143,17 +146,25 @@ export class GameScene extends Scene {
         // but let's require 'interactInput' for action.
 
         if (this.hasKey) {
+             if (this.isInteracting) return; // Prevent double trigger
+             this.isInteracting = true;
+
              this.events.emit('dialogue', "The door is unlocking...");
+             soundManager.playDoorOpen();
+             this.door.setTexture('door_open');
+
              this.time.delayedCall(2000, () => {
                  this.events.emit('dialogue', "It's open. The nightmare continues...");
                  // Next level logic would go here
+                 // For now, reset to demonstrate loop or win state
              });
         } else {
             // Debounce dialogue
             if (!this.isInteracting) {
                 this.isInteracting = true;
                 this.events.emit('dialogue', "It's locked. I need a key.");
-                this.time.delayedCall(3000, () => this.isInteracting = false);
+                soundManager.playLockedSound();
+                this.time.delayedCall(2000, () => this.isInteracting = false);
             }
         }
     }
