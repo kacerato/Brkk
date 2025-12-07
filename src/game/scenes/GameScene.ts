@@ -6,7 +6,12 @@ export class GameScene extends Scene {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private keyItem!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     private door!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    private wardrobe!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    private bed!: Phaser.Types.Physics.Arcade.Image; // Static
+    private window!: Phaser.GameObjects.Image; // Decor
+
     private hasKey: boolean = false;
+    private keyFound: boolean = false;
     private isInteracting: boolean = false;
 
     // Virtual Input State
@@ -20,41 +25,57 @@ export class GameScene extends Scene {
 
     create() {
         // Setup world
-        this.add.image(400, 300, 'background');
+        this.add.image(400, 300, 'background').setPipeline('Light2D');
         this.physics.world.setBounds(0, 0, 800, 600);
 
         // Ground (Invisible)
         const ground = this.physics.add.staticGroup();
         ground.create(400, 580, undefined).setSize(800, 40).setVisible(false);
 
+        // Environment Props (Layered)
+        // Window
+        this.window = this.add.image(600, 150, 'window').setPipeline('Light2D');
+
+        // Bed
+        this.bed = this.physics.add.staticImage(150, 520, 'bed').setPipeline('Light2D') as Phaser.Types.Physics.Arcade.Image;
+
+        // Wardrobe (Interactive)
+        this.wardrobe = this.physics.add.sprite(300, 470, 'wardrobe').setPipeline('Light2D');
+        this.wardrobe.setImmovable(true);
+        (this.wardrobe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+
         // Door
-        this.door = this.physics.add.sprite(700, 485, 'door_closed');
+        this.door = this.physics.add.sprite(750, 485, 'door_closed').setPipeline('Light2D');
         this.door.setImmovable(true);
         (this.door.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
-        // Key (Hidden somewhere or visible)
-        this.keyItem = this.physics.add.sprite(100, 550, 'key');
+        // Key (Hidden initially)
+        this.keyItem = this.physics.add.sprite(300, 550, 'key');
         this.keyItem.setBounceY(0.5);
+        this.keyItem.setVisible(false);
+        this.keyItem.disableBody(true, true); // Inactive
 
-        // Player - Adjusted Y to fit new scale
+        // Player
         this.player = this.physics.add.sprite(400, 480, 'nick');
         this.player.setCollideWorldBounds(true);
         this.player.setBounce(0.1);
-        // Reduce hitbox size slightly to fit the visual
+        this.player.setPipeline('Light2D');
+
+        // Adjust hitbox
         this.player.body.setSize(60, 180);
         this.player.body.setOffset(34, 10);
+        this.player.setScale(0.5);
 
-        // Animations
-        this.anims.create({
-            key: 'walk',
-            frames: [
-                { key: 'nick_walk1' },
-                { key: 'nick' }, // Idle frame as middle
-                { key: 'nick_walk2' },
-                { key: 'nick' }
-            ],
-            frameRate: 6,
-            repeat: -1
+        // Breathing Tween
+        this.tweens.add({
+            targets: this.player,
+            scaleY: 0.48,
+            scaleX: 0.51,
+            y: '+=2',
+            duration: 1500,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
         });
 
         // Collisions
@@ -63,8 +84,6 @@ export class GameScene extends Scene {
 
         // Overlaps
         this.physics.add.overlap(this.player, this.keyItem, this.collectKey, undefined, this);
-        // Remove automatic door check on overlap, now controlled by Interaction Input
-        // this.physics.add.overlap(this.player, this.door, this.checkDoor, undefined, this);
 
         // Input
         if (this.input.keyboard) {
@@ -75,24 +94,27 @@ export class GameScene extends Scene {
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, 800, 600);
 
-        // Lights (Macabre atmosphere)
-        this.lights.enable().setAmbientColor(0x555555);
-        this.player.setPipeline('Light2D');
-        this.lights.addLight(350, 200, 200).setColor(0xffffff).setIntensity(2); // Moonlight
+        // Lights
+        this.lights.enable().setAmbientColor(0x222222); // Darker
+        this.lights.addLight(600, 150, 300).setColor(0x88aaff).setIntensity(1.5); // Window Moonlight
+        const playerLight = this.lights.addLight(400, 480, 250).setColor(0xffaa00).setIntensity(1.0); // "Soul" light
 
-        // Notify React UI about dialogue
-        this.events.emit('dialogue', "Where am I? ... I need to find a way out.");
+        // Update light position
+        this.events.on('update', () => {
+            playerLight.x = this.player.x;
+            playerLight.y = this.player.y;
+        });
 
-        // Start Ambient Sound
-        // Note: Browsers block auto-play until interaction.
-        // We rely on the first click/tap to unlock audio context in SoundManager
+        // Intro Dialogue
+        this.time.delayedCall(500, () => {
+             this.events.emit('dialogue', "My head... it hurts. Why is the door locked?");
+        });
     }
 
     update() {
         const speed = 160;
         this.player.setVelocityX(0);
 
-        // Combine Keyboard and Virtual Input
         let moving = false;
         if ((this.cursors?.left.isDown || this.leftInput)) {
             this.player.setVelocityX(-speed);
@@ -105,31 +127,47 @@ export class GameScene extends Scene {
         }
 
         if (moving) {
-            this.player.play('walk', true);
-            // Simulate footstep sound occasionally?
-            // In a real game, listen to animation frames.
+             this.player.setAngle(Math.sin(this.time.now / 100) * 2);
             if (Math.random() > 0.95) soundManager.playFootstep();
         } else {
-            this.player.stop();
-            this.player.setTexture('nick');
+            this.player.setAngle(0);
         }
 
-        // Logic for interaction (Action Button) - NO JUMPING
+        // Interaction Logic
         if (this.interactInput) {
-            this.interactInput = false; // consume input
-            // Check overlaps manually or let physics overlap callback handle it
-            // Since we use physics overlap in create(), those trigger automatically when bodies touch.
-            // But usually we want action ONLY when button pressed.
+            this.interactInput = false;
 
-            // Let's rely on overlap callbacks checking a flag or just use the button to trigger 'check' logic?
-            // Actually, physics overlaps run every frame.
-            // Better approach: When Interact Pressed, check distance to objects.
+            // Prioritize Key Pickup (handled by overlap auto, but let's check distance to be sure)
 
-            if (this.physics.overlap(this.player, this.door)) {
-                 // Trigger door logic
-                 // We need to re-trigger the checkDoor manually or rely on state
-                 this.checkDoor(this.player, this.door);
+            // Check Wardrobe
+            if (this.physics.overlap(this.player, this.wardrobe)) {
+                this.checkWardrobe();
             }
+            // Check Door
+            else if (this.physics.overlap(this.player, this.door)) {
+                 this.checkDoor();
+            }
+        }
+    }
+
+    private checkWardrobe() {
+        if (this.isInteracting) return;
+        this.isInteracting = true;
+
+        if (!this.keyFound) {
+            this.events.emit('dialogue', "It smells like rot... Wait, something is shining.");
+
+            this.time.delayedCall(1500, () => {
+                this.keyFound = true;
+                this.keyItem.enableBody(true, this.wardrobe.x, this.wardrobe.y + 50, true, true);
+                this.keyItem.setVisible(true);
+                this.keyItem.setVelocityY(-100); // Pop out
+                soundManager.playLockedSound(); // Reuse sound as 'rummage'
+                this.isInteracting = false;
+            });
+        } else {
+            this.events.emit('dialogue', "Just old clothes. Nothing else.");
+            this.time.delayedCall(1000, () => this.isInteracting = false);
         }
     }
 
@@ -137,34 +175,28 @@ export class GameScene extends Scene {
         key.disableBody(true, true);
         this.hasKey = true;
         soundManager.playPickup();
-        this.events.emit('dialogue', "I found a key! Maybe it opens the door.");
+        this.events.emit('dialogue', "I got the Old Key.");
     }
 
-    private checkDoor(player: any, door: any) {
-        // Only trigger if interacting (jumping/up for now or specific button)
-        // For simplicity in mobile, overlapping is enough to show message,
-        // but let's require 'interactInput' for action.
-
+    private checkDoor() {
         if (this.hasKey) {
-             if (this.isInteracting) return; // Prevent double trigger
+             if (this.isInteracting) return;
              this.isInteracting = true;
 
-             this.events.emit('dialogue', "The door is unlocking...");
+             this.events.emit('dialogue', "The key fits...");
              soundManager.playDoorOpen();
              this.door.setTexture('door_open');
 
              this.time.delayedCall(2000, () => {
-                 this.events.emit('dialogue', "It's open. The nightmare continues...");
-                 // Next level logic would go here
-                 // For now, reset to demonstrate loop or win state
+                 this.events.emit('dialogue', "I'm leaving this nightmare.");
+                 // Fade out or end
              });
         } else {
-            // Debounce dialogue
             if (!this.isInteracting) {
                 this.isInteracting = true;
-                this.events.emit('dialogue', "It's locked. I need a key.");
+                this.events.emit('dialogue', "Locked. I need to find the key.");
                 soundManager.playLockedSound();
-                this.time.delayedCall(2000, () => this.isInteracting = false);
+                this.time.delayedCall(1500, () => this.isInteracting = false);
             }
         }
     }
