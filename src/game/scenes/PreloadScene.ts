@@ -6,15 +6,16 @@ export class PreloadScene extends Scene {
     }
 
     preload() {
-        // Character assets (Larger size for detail)
-        this.load.svg('nick', 'assets/nick.svg', { width: 128, height: 200 });
-        this.load.svg('nick_walk1', 'assets/nick_walk1.svg', { width: 128, height: 200 });
-        this.load.svg('nick_walk2', 'assets/nick_walk2.svg', { width: 128, height: 200 });
+        // Character assets - Using High Res PNG
+        this.load.image('nick', 'assets/nick.png');
 
         // Props
         this.load.svg('key', 'assets/key.svg', { width: 32, height: 32 });
         this.load.svg('door_closed', 'assets/door_closed.svg', { width: 60, height: 100 });
         this.load.svg('door_open', 'assets/door_open.svg', { width: 60, height: 100 });
+        this.load.svg('wardrobe', 'assets/wardrobe.svg', { width: 100, height: 180 });
+        this.load.svg('bed', 'assets/bed.svg', { width: 150, height: 80 });
+        this.load.svg('window', 'assets/window.svg', { width: 80, height: 120 });
 
         // Background
         this.load.svg('background', 'assets/background.svg', { width: 800, height: 600 });

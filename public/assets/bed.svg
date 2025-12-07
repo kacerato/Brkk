@@ -1,0 +1,24 @@
+<svg width="250" height="150" viewBox="0 0 250 150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Frame -->
+  <rect x="0" y="50" width="10" height="100" fill="#222" /> <!-- Leg L -->
+  <rect x="240" y="50" width="10" height="100" fill="#222" /> <!-- Leg R -->
+  <rect x="0" y="50" width="250" height="20" fill="#222" /> <!-- Base -->
+
+  <!-- Mattress -->
+  <rect x="5" y="40" width="240" height="30" fill="#ccc" />
+
+  <!-- Sheets (Messy) -->
+  <path d="M5,40 Q60,30 120,45 Q180,35 245,40 L245,100 L5,100 Z" fill="#eee" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Pillow -->
+  <rect x="10" y="25" width="60" height="30" rx="10" fill="#fff" stroke="#ddd"/>
+
+  <!-- Stains -->
+  <circle cx="150" cy="60" r="10" fill="#500" opacity="0.3" filter="url(#blur)"/>
+
+  <defs>
+      <filter id="blur">
+          <feGaussianBlur stdDeviation="2"/>
+      </filter>
+  </defs>
+</svg>

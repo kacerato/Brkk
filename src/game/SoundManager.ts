@@ -122,6 +122,31 @@ export class SoundManager {
         osc2.start(this.ctx.currentTime + 0.15);
         osc2.stop(this.ctx.currentTime + 0.25);
     }
+
+    playHeartbeat() {
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const t = this.ctx.currentTime;
+
+        const createThump = (time: number, vol: number) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.frequency.setValueAtTime(60, time);
+            osc.frequency.exponentialRampToValueAtTime(30, time + 0.1);
+
+            gain.gain.setValueAtTime(vol, time);
+            gain.gain.exponentialRampToValueAtTime(0, time + 0.1);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(time);
+            osc.stop(time + 0.15);
+        };
+
+        createThump(t, 0.5);
+        createThump(t + 0.2, 0.3); // Lub-dub
+    }
 }
 
 export const soundManager = new SoundManager();

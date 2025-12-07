@@ -1,0 +1,29 @@
+<svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark Wood Texture -->
+  <defs>
+      <filter id="woodGrain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.5 0.05" numOctaves="3" result="noise"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.4 0" in="noise" result="coloredNoise"/>
+          <feComposite operator="in" in="coloredNoise" in2="SourceGraphic" result="composite"/>
+          <feBlend mode="multiply" in="composite" in2="SourceGraphic"/>
+      </filter>
+  </defs>
+
+  <!-- Cabinet Body -->
+  <rect x="10" y="10" width="180" height="280" fill="#3e2723" stroke="#212121" stroke-width="4" filter="url(#woodGrain)"/>
+
+  <!-- Doors -->
+  <rect x="15" y="15" width="82" height="250" fill="#4e342e" stroke="#000" stroke-width="2"/>
+  <rect x="103" y="15" width="82" height="250" fill="#4e342e" stroke="#000" stroke-width="2"/>
+
+  <!-- Detail Carving -->
+  <rect x="25" y="30" width="62" height="220" fill="none" stroke="#2e1c19" stroke-width="2"/>
+  <rect x="113" y="30" width="62" height="220" fill="none" stroke="#2e1c19" stroke-width="2"/>
+
+  <!-- Handles -->
+  <circle cx="90" cy="150" r="5" fill="#ffd700" stroke="#000"/>
+  <circle cx="110" cy="150" r="5" fill="#ffd700" stroke="#000"/>
+
+  <!-- Shadow/Darkness (Bottom) -->
+  <rect x="10" y="250" width="180" height="40" fill="black" opacity="0.3"/>
+</svg>
